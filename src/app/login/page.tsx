@@ -1,5 +1,6 @@
 'use client'
-import * as React from 'react';
+
+import axios from 'axios'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,14 +17,18 @@ const defaultTheme = createTheme();
 
 export default function Login() {
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
+    const userData = {
+      username: data.get('name'),
       password: data.get('password'),
-    });
+    };
+
+    const response = await axios.post('/api/users/login', userData);
+    console.log(response);
+    
   };
 
   return (
@@ -49,10 +54,10 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="name"
+              label="Name Address"
+              name="name"
+              autoComplete="name"
               autoFocus
             />
             <TextField
