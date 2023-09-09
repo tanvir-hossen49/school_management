@@ -49,7 +49,11 @@ export async function POST(request: NextRequest, response: NextResponse){
         response.cookies.set('token', token, { httpOnly: true })
 
         return response;
-    }catch(error){
-        console.log('Error: login failed', error)
+    }catch(error: any){
+        console.log('Error: login failed', error);
+        return NextResponse.json({
+            message: error.message,
+            success: false,
+        })
     }
 }

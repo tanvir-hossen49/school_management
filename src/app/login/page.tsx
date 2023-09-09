@@ -1,5 +1,4 @@
 'use client'
-
 import axios from 'axios'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -11,25 +10,45 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from '../components/Copyright';
+import {useRouter} from 'next/navigation'
+import { useEffect, useState } from 'react';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Login() {
+  const router = useRouter();
+  const [user, setUser] = useState({
+    username: '',
+    password: ''
+  })
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
-    const data = new FormData(event.currentTarget);
-    const userData = {
-      username: data.get('name'),
-      password: data.get('password'),
-    };
 
-    const response = await axios.post('/api/users/login', userData);
-    console.log(response);
+    try {
+      setLoading(true)
+      const {data} = await axios.post('/api/users/login', user);
+      if(data.success) {
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally{
+      setLoading(false)
+    }
     
   };
+
+  useEffect(() => {
+    if (user.username.length > 3 && user.password.length > 4) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  },[user])
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -55,10 +74,12 @@ export default function Login() {
               required
               fullWidth
               id="name"
-              label="Name Address"
+              label="Name"
               name="name"
               autoComplete="name"
               autoFocus
+              value={user.username}
+              onChange={(e) => setUser({...user, username: e.target.value})}
             />
             <TextField
               margin="normal"
@@ -69,6 +90,7 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setUser({...user, password: e.target.value})}
             />
            
             <Button
@@ -77,10 +99,10 @@ export default function Login() {
               variant="contained"
               style={{backgroundColor: '#1565c0'}}
               sx={{ mt: 3, mb: 2 }}
+              disabled={buttonDisabled}
             >
-              Sign In
+              { loading ? "loading..." : "Sign In" }
             </Button>
-            
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
