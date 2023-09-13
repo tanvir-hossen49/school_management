@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const bcrypt = require('bcryptjs');
+import bcryptjs from "bcryptjs";
 
 const userSchema:any = new Schema({
   username: {
@@ -15,7 +15,7 @@ const userSchema:any = new Schema({
     type: String, 
     required: [true, "please provide a password"],
     minlength: [6, "The length of password can be minimum 6 characters"],
-    set: (value:string) => bcrypt.hashSync(value, bcrypt.genSaltSync(10)),
+    set: (value:string) => bcryptjs.hashSync(value, bcryptjs.genSaltSync(10)),
   },
   email: { 
     type: String,

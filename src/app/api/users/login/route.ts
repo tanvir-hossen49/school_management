@@ -1,6 +1,6 @@
 import { connect } from "@/dbConfig/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from 'bcryptjs';
+import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "@/model/userModel";
 
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest, response: NextResponse){
         }
 
         //check password is match
-        const validPassword = await bcrypt.compare(password, user.password)
+        const validPassword = await bcryptjs.compare(password, user.password)
         if(!validPassword) {
             return NextResponse.json({
                 message: "password not match",
