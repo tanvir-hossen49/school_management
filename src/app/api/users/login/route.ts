@@ -16,19 +16,21 @@ export async function POST(request: NextRequest, response: NextResponse){
         const user = await User.findOne({username});
 
         if(!user){
-            return NextResponse.json(
-               { message: "user not exit with this name"},
-               { status: 404}
-            )
+            return NextResponse.json({
+               message: "user not exit with this name",
+               status: 404,
+               success: false
+            })
         }
 
         //check password is match
         const validPassword = await bcrypt.compare(password, user.password)
         if(!validPassword) {
-            return NextResponse.json(
-                { message: "password not match"},
-                { status: 404}
-             )
+            return NextResponse.json({
+                message: "password not match",
+                status: 404,
+                success: false,
+            })
         }
 
         //create token
@@ -42,6 +44,7 @@ export async function POST(request: NextRequest, response: NextResponse){
         //set response
         const response = NextResponse.json({
             message: "Login successful",
+            status:200,
             success: true,
         });
         

@@ -10,8 +10,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from '../components/Copyright';
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react';
+import ShowToast from '../utilities/ShowToast';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -29,15 +30,22 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      setLoading(true)
+      setLoading(true);
+      setButtonDisabled(true);
       const {data} = await axios.post('/api/users/login', user);
+
       if(data.success) {
+        ShowToast('success', 'log in successful')
         router.push("/");
+        return;
       }
-    } catch (error) {
-      console.log(error);
+
+      ShowToast('error', data.message);
+    } catch (error: any) {
+        ShowToast('error', error.message);
     } finally{
       setLoading(false)
+      setButtonDisabled(false);
     }
     
   };
