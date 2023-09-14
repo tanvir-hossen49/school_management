@@ -13,7 +13,6 @@ import { usePathname  } from 'next/navigation';
 
 export const AdminListItems = () => {
   const pathname = usePathname();
-  console.log(pathname);
   
   const sideBarLink = [
     {
@@ -48,25 +47,38 @@ export const AdminListItems = () => {
   </React.Fragment>
 };
 
-export const studentListItems = (
-  <React.Fragment>
-    <ListItemButton>
-      <ListItemIcon>
-        <HomeIcon />
-      </ListItemIcon>
-      <ListItemText primary="Home" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <EventNoteIcon />
-      </ListItemIcon>
-      <ListItemText primary="Exam Schedules" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <ReportIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItemButton>
+export const StudentListItems = () => {
+  const pathname = usePathname();
+  
+  const sideBarLink = [
+    {
+      name:'Home',
+      link: '/dashboard',
+      icon: <HomeIcon />
+    },
+    {
+      name:'Exam Schedules',
+      link: '/dashboard/teacher',
+      icon:  <EventNoteIcon />
+    },
+    {
+      name:'Reports',
+      link: '/dashboard/student',
+      icon:  <ReportIcon />
+    },
+  ]
+
+  return <React.Fragment>
+      {
+        sideBarLink.map(({link, name, icon}) => 
+        <Link href={link} key={name} className={`${pathname === link ? 'active' : ''}`}>
+          <ListItemButton>
+            <ListItemIcon>
+              {icon}
+            </ListItemIcon>
+            <ListItemText primary={name} />
+          </ListItemButton>
+      </Link>)
+      }
   </React.Fragment>
-)
+}

@@ -1,4 +1,4 @@
-import { getDataFromToken } from "@/app/helper/getDataFromToken";
+import { getDataFromToken } from "@/helper/getDataFromToken";
 import { connect } from "@/dbConfig/dbConfig";
 import User from "@/model/userModel";
 import { NextRequest, NextResponse } from "next/server";

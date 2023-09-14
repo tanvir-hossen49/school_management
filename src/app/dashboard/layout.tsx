@@ -16,11 +16,11 @@ import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container'
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { AdminListItems, studentListItems } from '../components/ListItem';
+import { AdminListItems, StudentListItems } from '../components/ListItem';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import IconButton from '@mui/material/IconButton';
-import { Avatar, Button, Grid } from "@mui/material";
+import { Avatar, Button, Grid, Skeleton } from "@mui/material";
 import Menu from '@mui/material/Menu';
 import ShowToast from '../utilities/ShowToast';
 
@@ -217,7 +217,13 @@ export default function DashboardLayout({children}:{children:React.ReactNode}) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            { user && user.role === 'admin' ?  <AdminListItems/>  : studentListItems }
+            { user ? user.role === 'admin' ?  <AdminListItems/>  : <StudentListItems /> : 
+            <div className='grid gap-y-2'>
+              <Skeleton variant="rectangular" animation="wave" height={43.97} />
+              <Skeleton variant="rectangular" animation="wave" height={43.97} />
+              <Skeleton variant="rectangular" animation="wave" height={43.97} />
+            </div>
+            }
           </List>
         </Drawer>
         <Box
