@@ -36,7 +36,7 @@ export default function Login() {
 
       if(data.success) {
         ShowToast('success', 'log in successful')
-        router.push("/");
+        router.push("/dashboard");
         return;
       }
 

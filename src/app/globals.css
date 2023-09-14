@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.active > div {
+    color: #fff;
+    background-color: #1976d2 !important;
+}
+.active svg{
+    fill: #fff;
+}

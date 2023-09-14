@@ -8,29 +8,45 @@ import PersonIcon from '@mui/icons-material/Person';
 import HomeIcon from '@mui/icons-material/Home';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import ReportIcon from '@mui/icons-material/Report';
+import Link from 'next/link';
+import { usePathname  } from 'next/navigation';
 
-export const adminListItems = (
-  <React.Fragment>
-    <ListItemButton>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <GroupIcon />
-      </ListItemIcon>
-      <ListItemText primary="Teachers" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <PersonIcon />
-      </ListItemIcon>
-      <ListItemText primary="Student" />
-    </ListItemButton>
+export const AdminListItems = () => {
+  const pathname = usePathname();
+  console.log(pathname);
+  
+  const sideBarLink = [
+    {
+      name:'Dashboard',
+      link: '/dashboard',
+      icon: <DashboardIcon />
+    },
+    {
+      name:'Teachers',
+      link: '/dashboard/teacher',
+      icon: <PersonIcon />
+    },
+    {
+      name:'Student',
+      link: '/dashboard/student',
+      icon: <GroupIcon /> 
+    },
+  ]
+
+ return <React.Fragment>
+    {
+      sideBarLink.map(({link, name, icon}) => 
+      <Link href={link} key={name} className={`${pathname === link ? 'active' : ''}`}>
+        <ListItemButton>
+          <ListItemIcon>
+            {icon}
+          </ListItemIcon>
+          <ListItemText primary={name} />
+        </ListItemButton>
+     </Link>)
+    }
   </React.Fragment>
-);
+};
 
 export const studentListItems = (
   <React.Fragment>
