@@ -1,7 +1,8 @@
 'use client';
+
 import * as React from 'react';
 import {useRouter} from 'next/navigation'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
@@ -20,22 +21,15 @@ import { AdminListItems, StudentListItems } from '../components/ListItem';
 import MenuItem from '@mui/material/MenuItem';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import IconButton from '@mui/material/IconButton';
-import { Avatar, Button, Grid, Skeleton } from "@mui/material";
+import { Avatar, Button, Skeleton } from "@mui/material";
 import Menu from '@mui/material/Menu';
 import ShowToast from '../utilities/ShowToast';
+import { useGetUserQuery } from '../../redux/api';
 
 const drawerWidth: number = 240;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
-}
-
-type UserType = {
-  _id: string,
-  username: string,
-  profileImg: string,
-  email?:string,
-  role: string,
 }
 
 const AppBar = styled(MuiAppBar, { shouldForwardProp: (prop) => prop !== 'open',
@@ -88,7 +82,9 @@ export default function DashboardLayout({children}:{children:React.ReactNode}) {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [disabled, setDisabled] = useState(false);
-  const [user, setUser] = useState< UserType | null>(null);
+
+  const { data } = useGetUserQuery('');
+  const user = data?.data;
   
   const toggleDrawer = () => {
     setOpen(!open);
@@ -117,19 +113,6 @@ export default function DashboardLayout({children}:{children:React.ReactNode}) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(() => {
-    const fetchUserData = async (): Promise<void> => {
-      try{
-        const {data} = await axios('/api/users/me');
-        setUser(data.data)
-      }catch(error: any) {
-        console.log(error.message);
-      }
-    };
-
-    fetchUserData()
-  }, [])
   
   return (
     <ThemeProvider theme={defaultTheme}>

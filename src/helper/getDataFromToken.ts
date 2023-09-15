@@ -7,6 +7,13 @@ export function getDataFromToken(request: NextRequest) {
         const decoded: any = jwt.verify(token, process.env.SECRET_TOKEN!);
         return decoded.id;
     }catch(error: any) {
-        throw new Error(error.message)
+        if (error instanceof jwt.JsonWebTokenError) {
+        // Handle invalid token
+        console.error('Invalid token:', error.message);
+        } else {
+        // Handle other errors
+        console.error('JWT verification error:', error.message);
+        }
+        throw new Error('JWT verification failed');
     }
 }
